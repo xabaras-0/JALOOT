@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>JUST ANOTHER LIST OF OSINT TOOLS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root{
+--bg:#020617;
+--panel:#0b1220;
+--border:#1e293b;
+--accent:#00f5ff;
+--accent-soft:#38bdf8;
+--text:#e2e8f0;
+--muted:#64748b;
+--green:#22c55e;
+}
+
+body{
+font-family:'Inter', sans-serif;
+background: radial-gradient(circle at top, #020617, #000);
+color:var(--text);
+margin:0;
+letter-spacing:0.3px;
+}
+
+/* HEADER */
+
+header{
+background: rgba(2,6,23,0.8);
+backdrop-filter: blur(10px);
+padding:25px;
+text-align:center;
+border-bottom:1px solid var(--border);
+box-shadow:0 0 20px rgba(0,245,255,0.05);
+}
+
+h1{
+font-family:'JetBrains Mono', monospace;
+color:var(--accent);
+letter-spacing:1px;
+text-shadow:0 0 10px rgba(0,245,255,0.5);
+}
+
+/* SEARCH */
+
+.search{
+width:60%;
+padding:12px;
+margin-top:15px;
+border-radius:8px;
+border:1px solid var(--border);
+background:var(--panel);
+color:white;
+outline:none;
+transition:0.2s;
+}
+
+.search:focus{
+border-color:var(--accent);
+box-shadow:0 0 10px rgba(0,245,255,0.3);
+}
+
+/* CONTAINER */
+
+.container{
+padding:40px;
+}
+
+/* CATEGORY */
+
+.category{
+margin-bottom:50px;
+}
+
+.category h2{
+color:var(--white);
+font-weight:600;
+border-bottom:1px solid var(--border);
+padding-bottom:10px;
+letter-spacing:1px;
+}
+
+/* GRID */
+
+.tools{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:20px;
+  margin-top:20px;
+  align-items:stretch;
+}
+
+/* CARD */
+
+.card{
+background: linear-gradient(145deg, #020617, #0b1220);
+height:70%;
+padding:18px;
+border-radius:12px;
+border:1px solid var(--border);
+transition: all 0.25s ease;
+position:relative;
+overflow:hidden;
+cursor:pointer;
+}
+
+/* wrapper link */
+.card-link{
+text-decoration:none;
+display:block;
+color:inherit;
+}
+
+
+/* titolo stile link */
+.card-title{
+color:var(--accent-soft);
+font-weight:600;
+font-family:'JetBrains Mono', monospace;
+transition:0.2s;
+}
+
+/* hover effect */
+.card-link:hover .card-title{
+color:var(--accent);
+text-shadow:0 0 8px rgba(0,245,255,0.6);
+}
+
+/* subtle glow border */
+.card::before{
+content:"";
+position:absolute;
+pointer-events: none;
+inset:0;
+border-radius:12px;
+padding:1px;
+background: linear-gradient(120deg, transparent, var(--accent), transparent);
+-webkit-mask:
+linear-gradient(#000 0 0) content-box,
+linear-gradient(#000 0 0);
+-webkit-mask-composite: xor;
+mask-composite: exclude;
+opacity:0;
+transition:0.3s;
+}
+
+.card:hover::before{
+opacity:1;
+}
+
+.card:hover{
+transform: translateY(-5px) scale(1.02);
+box-shadow:0 10px 25px rgba(0,0,0,0.6);
+}
+
+.card a{
+position:relative;
+z-index:2;
+}
+
+/* BADGES */
+
+.badge{
+position:absolute;
+top:10px;
+right:10px;
+font-size:10px;
+padding:4px 6px;
+border-radius:4px;
+background:rgba(197, 34, 80,0.15);
+color:#c52250;
+border:1px solid rgba(197, 34, 80,0.4);
+font-family:'JetBrains Mono', monospace;
+letter-spacing:0.5px;
+pointer-events:none;
+}
+
+.badge_github{
+position:absolute;
+top:10px;
+right:10px;
+font-size:10px;
+padding:4px 6px;
+border-radius:4px;
+background:rgba(99, 99, 99,0.15);
+color:#fff;
+border:1px solid rgba(99, 99, 99,0.4);
+font-family:'JetBrains Mono', monospace;
+letter-spacing:0.5px;
+pointer-events:none;
+}
+
+.badge_top{
+position:absolute;
+top:10px;
+right:10px;
+font-size:10px;
+padding:4px 6px;
+border-radius:4px;
+background:rgba(0, 255, 183,0.15);
+color:#fff;
+border:1px solid rgba(0, 255, 183,0.4);
+font-family:'JetBrains Mono', monospace;
+letter-spacing:0.5px;
+pointer-events:none;
+}
+/* LINKS */
+
+.card a{
+color:var(--accent-soft);
+font-weight:600;
+text-decoration:none;
+font-family:'JetBrains Mono', monospace;
+}
+
+.card a:hover{
+color:var(--accent);
+text-shadow:0 0 8px rgba(0,245,255,0.6);
+}
+
+/* TEXT */
+
+.card p{
+font-size:13px;
+color:var(--muted);
+margin-top:8px;
+}
+
+.category-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid var(--border);
+padding-bottom:10px;
+}
+
+.category-header h2{
+margin:0;
+border:none;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:25px;
+border-top:1px solid var(--border);
+color:var(--muted);
+font-size:13px;
+letter-spacing:1px;
+}
+
+/* SCROLLBAR (extra cyber touch) */
+
+::-webkit-scrollbar{
+width:8px;
+}
+
+::-webkit-scrollbar-track{
+background:#020617;
+}
+
+::-webkit-scrollbar-thumb{
+background:var(--accent);
+border-radius:10px;
+}
+</style>
+</head>
+<body>
+<header>
+<h1>JUST ANOTHER LIST OF OSINT TOOLS</h1>
+<p style="color:#64748b; font-size:14px;">
+Lista di strumenti a supporto di investigatori e analisti [last update: 05/05/2026]
+</p>
+<input class="search" id="searchInput" placeholder="Search OSINT tool..." type="text"/>
+</header>
+<div class="container">
+<div class="category">
+<h2>General</h2>
+<div class="tools">
+<a class="card-link" href="https://www.google.com/advanced_search" target="_blank">
+  <div class="card">
+    <div class="card-title">Google Advanced Search</div>
+    <p>Ricerca avanzata Google con filtri su dominio, formato, lingua e parole chiave.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.exploit-db.com/google-hacking-database" target="_blank">
+  <div class="card">
+    <div class="card-title">Google Hacking Database</div>
+    <p>Database di Google Dorks per OSINT, discovery e sicurezza.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://maltiverse.com/start" target="_blank">
+  <div class="card">
+    <div class="card-title">Maltiverse</div>
+    <p>Ricerca IoC (IP, domini, hash) con dati su minacce e reputazione.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://osint.sh/" target="_blank">
+  <div class="card">
+    <div class="card-title">OSINT.SH</div>
+    <p>Raccolta organizzata di strumenti OSINT per diverse categorie.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://synapsint.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Synapsint</div>
+    <p>Aggregatore OSINT per email, domini, username e metadati.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://osintframework.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">OSINT Framework</div>
+    <p>Mappa interattiva di strumenti OSINT suddivisi per tipologia.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://start.me/p/L1rEYQ/osint4all?locale=it" target="_blank">
+  <div class="card">
+    <div class="card-title">OSINT4ALL</div>
+    <p>Dashboard start.me con ampia collezione di risorse OSINT.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://one-plus.github.io/WebsiteInformation" target="_blank">
+  <div class="card">
+    <div class="card-title">OSINT Toolkit</div>
+    <p>Toolkit web per raccolta informazioni su siti e infrastrutture.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://start.me/p/W1kDAj/geoint" target="_blank">
+  <div class="card">
+    <div class="card-title">GEOINT</div>
+    <p>Raccolta strumenti per analisi geospaziale e intelligence geografica.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://search.wikileaks.org/advanced?" target="_blank">
+  <div class="card">
+    <div class="card-title">WikiLeaks Search</div>
+    <p>Motore di ricerca avanzato nei documenti pubblicati da WikiLeaks.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Forensics</h2>
+<div class="tools">
+<a class="card-link" href="https://29a.ch/photo-forensics/#strings" target="_blank">
+  <div class="card">
+    <div class="card-title">Forensically</div>
+    <p>Suite di analisi forense immagini (ELA, metadati, clonazioni, noise).</p>
+  </div>
+</a>
+
+<a class="card-link" href="http://fotoforensics.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">FotoForensics</div>
+    <p>Analisi ELA per individuare manipolazioni e alterazioni nelle immagini.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.imageidentify.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">ImageIdentify</div>
+    <p>Riconoscimento immagini tramite AI con classificazione automatica.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Ransomware</h2>
+<div class="tools">
+<a class="card-link" href="https://www.ransomware.live/" target="_blank">
+  <div class="card">
+    <div class="card-title">Ransomware.live</div>
+    <p>Monitoraggio in tempo reale di gruppi ransomware e leak sites.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://github.com/fastfire/deepdarkCTI/blob/main/ransomware_gang.md" target="_blank">
+  <div class="card">
+    <div class="card-title">Ransomware Groups List</div>
+    <p>Elenco gruppi ransomware con link a blog e leak site.</p>
+	<div class="badge_github">GITHUB</div>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Sandbox</h2>
+<div class="tools">
+<a class="card-link" href="https://www.hybrid-analysis.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Hybrid Analysis</div>
+    <p>Analisi automatizzata malware con report dettagliati e behavior tracking.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://any.run/" target="_blank">
+  <div class="card">
+    <div class="card-title">ANY.RUN</div>
+    <p>Sandbox interattiva per analizzare malware in tempo reale.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.joesandbox.com/#windows" target="_blank">
+  <div class="card">
+    <div class="card-title">Joe Sandbox</div>
+    <p>Analisi dinamica malware con report avanzati e indicatori di compromissione.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://capesandbox.com/analysis/" target="_blank">
+  <div class="card">
+    <div class="card-title">CAPE Sandbox</div>
+    <p>Sandbox open source per analisi malware e reverse engineering.</p>
+  </div>
+</a>
+</div>
+</div>
+<div class="category">
+<h2>Github projects</h2>
+<div class="tools">
+<a class="card-link" href="https://github.com/s0md3v/Photon" target="_blank">
+  <div class="card">
+    <div class="card-title">Photon</div>
+    <p>Crawler OSINT veloce per raccolta URL, endpoint e asset web.</p>
+	<div class="badge_github">GITHUB</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://github.com/megadose/holehe" target="_blank">
+  <div class="card">
+    <div class="card-title">holehe</div>
+    <p>Verifica utilizzo email su servizi online tramite recovery e lookup.</p>
+	<div class="badge_github">GITHUB</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://github.com/anmolksachan/thetimemachine" target="_blank">
+  <div class="card">
+    <div class="card-title">TheTimeMachine</div>
+    <p>Estrae URL storici da Wayback Machine per recon e discovery.</p>
+	<div class="badge_github">GITHUB</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://github.com/elceef/dnstwist" target="_blank">
+  <div class="card">
+    <div class="card-title">dnstwist</div>
+    <p>Genera varianti dominio per rilevare phishing e typosquatting.</p>
+	<div class="badge_github">GITHUB</div>
+  </div>
+</a>
+</div>
+</div>
+<div class="category">
+<h2>Email</h2>
+<div class="tools">
+<a class="card-link" href="https://epieos.com/?q=" target="_blank">
+  <div class="card">
+    <div class="card-title">Epieos</div>
+    <p>Ricerca OSINT su email con dati da servizi e piattaforme online.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://phonebook.cz/" target="_blank">
+  <div class="card">
+    <div class="card-title">Phonebook.cz</div>
+    <p>Ricerca email, domini e credenziali da dataset Intelligence X.</p>
+    <div class="badge">AUTHENTICATED</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://gmail-osint.activetk.jp/" target="_blank">
+  <div class="card">
+    <div class="card-title">Gmail OSINT</div>
+    <p>Analisi account Gmail e verifica informazioni associate.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://osint.rocks/" target="_blank">
+  <div class="card">
+    <div class="card-title">OSINT.rocks</div>
+    <p>Toolkit OSINT per email, username e investigazioni online.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://leakpeek.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">LeakPeek</div>
+    <p>Ricerca credenziali esposte e dati da leak e breach pubblici.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://haveibeenpwned.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Have I Been Pwned</div>
+    <p>Verifica se email o password sono presenti in data breach.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://breachdirectory.org/" target="_blank">
+  <div class="card">
+    <div class="card-title">BreachDirectory</div>
+    <p>Motore di ricerca per email e username compromessi.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://emailrep.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">EmailRep</div>
+    <p>Analizza reputazione email con indicatori di rischio e abuso.</p>
+    <div class="badge">AUTHENTICATED</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://hunter.io/search" target="_blank">
+  <div class="card">
+    <div class="card-title">Hunter</div>
+    <p>Trova email aziendali associate a domini e organizzazioni.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.skymem.info/" target="_blank">
+  <div class="card">
+    <div class="card-title">Skymem</div>
+    <p>Motore di ricerca email da fonti pubbliche e archivi web.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://gist.github.com/ammarshah/f5c2624d767f91a7cbdc4e54db8dd0bf" target="_blank">
+  <div class="card">
+    <div class="card-title">Email Providers List</div>
+    <p>Lista domini provider email (free, paid, disposable, blacklist).</p>
+	<div class="badge_github">GITHUB</div>
+  </div>
+</a>
+</div>
+</div>
+<div class="category">
+<h2>DataLeaks</h2>
+<div class="tools">
+<a class="card-link" href="https://www.dehashed.com/search#breachCheck" target="_blank">
+  <div class="card">
+    <div class="card-title">DeHashed</div>
+    <p>Motore di ricerca per dati compromessi da breach e database leak.</p>
+    <div class="badge">AUTHENTICATED</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://leak-lookup.com/api" target="_blank">
+  <div class="card">
+    <div class="card-title">Leak-Lookup</div>
+    <p>Ricerca email, username e password in database di leak.</p>
+    <div class="badge">AUTHENTICATED</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://vigilante.pw/" target="_blank">
+  <div class="card">
+    <div class="card-title">Vigilante</div>
+    <p>Directory di database violati e raccolte di dati compromessi.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://snusbase.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Snusbase</div>
+    <p>Motore di ricerca per credenziali, email e dati da leak.</p>
+    <div class="badge">AUTHENTICATED</div>
+  </div>
+</a>
+</div>
+</div>
+<div class="category">
+<h2>Banking</h2>
+<div class="tools">
+<a class="card-link" href="https://binlist.net/" target="_blank">
+  <div class="card">
+    <div class="card-title">Binlist</div>
+    <p>Lookup BIN/IIN per identificare banca, circuito e paese della carta.</p>
+  </div>
+</a>
+</div>
+</div>
+<div class="category">
+<h2>Username</h2>
+<div class="tools">
+<a class="card-link" href="https://www.whatsmyname.app/" target="_blank">
+  <div class="card">
+    <div class="card-title">WhatsMyName</div>
+    <p>Ricerca username su centinaia di piattaforme online.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://namecheckup.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">NameCheckup</div>
+    <p>Verifica disponibilità username su social e servizi web.</p>
+  </div>
+</a>
+
+<a class="card-link" href="http://metricsparrow.com/toolkit/email-permutator/" target="_blank">
+  <div class="card">
+    <div class="card-title">Email Permutator</div>
+    <p>Genera varianti email basate su nome, cognome e dominio.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://instantusername.com/#/" target="_blank">
+  <div class="card">
+    <div class="card-title">Instant Username</div>
+    <p>Controllo rapido disponibilità username su più piattaforme.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://namechk.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Namechk</div>
+    <p>Verifica username, domini e brand su numerosi servizi.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Telephone</h2>
+<div class="tools">
+<a class="card-link" href="https://www.truecaller.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Truecaller</div>
+    <p>Identificazione chiamate e blocco spam tramite database globale.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://sync.me/" target="_blank">
+  <div class="card">
+    <div class="card-title">Sync.ME</div>
+    <p>Ricerca e identificazione numeri telefonici con caller ID avanzato.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://tools.epieos.com/phone.php" target="_blank">
+  <div class="card">
+    <div class="card-title">Epieos Tools</div>
+    <p>OSINT per analisi e ricerca di informazioni su numeri di telefono.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://numverify.com/dashboard?access_key_status=success" target="_blank">
+  <div class="card">
+      <div class="card-title">Numverify</div>
+      <p>Validazione e analisi numeri telefonici via API OSINT.</p>
+      <div class="badge">AUTHENTICATED</div>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Company/Brand</h2>
+<div class="tools">
+<a class="card-link" href="https://apps.db.ripe.net/db-web-ui/fulltextsearch" target="_blank">
+  <div class="card">
+    <div class="card-title">RIPE Database Search</div>
+    <p>Analisi di indirizzi IP, ASN e infrastrutture di rete.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://branddb.wipo.int/en/similarname" target="_blank">
+  <div class="card">
+    <div class="card-title">WIPO Global Brand Database</div>
+    <p>Ricerca marchi registrati e similitudini a livello globale.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://brandfetch.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Brandfetch</div>
+    <p>Recupero automatico di asset e informazioni sui brand.</p>
+  </div>
+</a>
+
+<a class="card-link" href="http://recruitmentgeek.com/tools/linkedin/" target="_blank">
+  <div class="card">
+    <div class="card-title">LinkedIn X-Ray Search</div>
+    <p>Ricerca avanzata di profili LinkedIn tramite Google dorking.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://rocketreach.co/" target="_blank">
+  <div class="card">
+      <div class="card-title">RocketReach</div>
+      <p>Ricerca contatti professionali e dati aziendali verificati.</p>
+      <div class="badge">AUTHENTICATED</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.ufficiocamerale.it" target="_blank">
+  <div class="card">
+    <div class="card-title">Ufficio Camerale</div>
+    <p>Ricerca visure e dati ufficiali di imprese italiane.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.reportaziende.it/cerca" target="_blank">
+  <div class="card">
+    <div class="card-title">Report Aziende</div>
+    <p>Consultazione informazioni e report su aziende italiane.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://registroaziende.it/" target="_blank">
+  <div class="card">
+    <div class="card-title">Registro Aziende</div>
+    <p>Database di aziende italiane e dati societari pubblici.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://tuttodati.it/" target="_blank">
+  <div class="card">
+    <div class="card-title">Tuttodati</div>
+    <p>Ricerca e aggregazione dati su imprese italiane.</p>
+    <div class="badge">AUTHENTICATED</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://bgp.he.net" target="_blank">
+  <div class="card">
+    <div class="card-title">Hurricane Electric BGP Toolkit</div>
+    <p>Analisi di routing Internet, ASN e blocchi IP globali.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://skrapp.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">Skrapp</div>
+    <p>Estrazione e ricerca di email aziendali da fonti pubbliche.</p>
+    <div class="badge">AUTHENTICATED</div>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>IP address</h2>
+<div class="tools">
+<a class="card-link" href="https://www.shodan.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">Shodan</div>
+    <p>Motore di ricerca per dispositivi e servizi esposti su Internet.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://viewdns.info/" target="_blank">
+  <div class="card">
+    <div class="card-title">ViewDNS</div>
+    <p>Suite di strumenti per analisi DNS, domini e infrastrutture web.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://viewdns.info/reverseip/?host=" target="_blank">
+  <div class="card">
+    <div class="card-title">Reverse IP Lookup (ViewDNS)</div>
+    <p>Identifica domini associati a un singolo indirizzo IP.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://apps.db.ripe.net/db-web-ui/fulltextsearch" target="_blank">
+  <div class="card">
+    <div class="card-title">RIPE NCC Database</div>
+    <p>Ricerca e analisi di registrazioni IP e ASN globali.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://search.odin.io/hosts" target="_blank">
+  <div class="card">
+    <div class="card-title">ODIN Host Search</div>
+    <p>Ricerca avanzata di host e asset esposti su Internet.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.ipqualityscore.com/free-ip-lookup-proxy-vpn-test/" target="_blank">
+  <div class="card">
+    <div class="card-title">IPQualityScore</div>
+    <p>Rilevamento proxy, VPN e reputazione degli indirizzi IP.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://app.netlas.io/host/" target="_blank">
+  <div class="card">
+    <div class="card-title">Netlas</div>
+    <p>Ricerca di asset digitali e intelligence su infrastrutture web.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.zoomeye.org/searchResult?q=" target="_blank">
+  <div class="card">
+    <div class="card-title">ZoomEye</div>
+    <p>Motore di ricerca per dispositivi e servizi esposti online.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://search.censys.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">Censys</div>
+    <p>Analisi di host, certificati e superfici di attacco Internet.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://hackertarget.com/reverse-ip-lookup/" target="_blank">
+  <div class="card">
+    <div class="card-title">HackerTarget Reverse IP</div>
+    <p>Identificazione domini collegati a uno stesso indirizzo IP.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://ipleak.net/?q=" target="_blank">
+  <div class="card">
+    <div class="card-title">IPLeak</div>
+    <p>Verifica IP, DNS e possibili leak di connessione.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.onyphe.io/search/?query=" target="_blank">
+  <div class="card">
+    <div class="card-title">ONYPHE</div>
+    <p>Cyber intelligence su asset esposti e superfici di attacco.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://fofa.so/" target="_blank">
+  <div class="card">
+    <div class="card-title">FOFA</div>
+    <p>Motore di ricerca per asset e dispositivi su Internet.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://ipinsight.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">IPInsight</div>
+    <p>Analisi di geolocalizzazione e informazioni sugli indirizzi IP.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.robtex.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Robtex</div>
+    <p>Analisi DNS, IP, domini e relazioni di rete.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://it.infobyip.com/ipbulklookup.php" target="_blank">
+  <div class="card">
+    <div class="card-title">InfoByIP Bulk Lookup</div>
+    <p>Lookup massivo di IP e domini con informazioni tecniche.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://ipapi.co/" target="_blank">
+  <div class="card">
+    <div class="card-title">ipapi</div>
+    <p>API per geolocalizzazione e dati sugli indirizzi IP.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://rdpguard.com/free-whois.aspx?" target="_blank">
+  <div class="card">
+    <div class="card-title">WHOIS Lookup (RIPE NCC)</div>
+    <p>Informazioni WHOIS su IP e registrazioni di rete.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.ip2proxy.com/demo#proxyresult" target="_blank">
+  <div class="card">
+    <div class="card-title">IP2Proxy</div>
+    <p>Rilevamento di proxy, VPN e anonimizzazione IP.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.abuseipdb.com/check/" target="_blank">
+  <div class="card">
+    <div class="card-title">AbuseIPDB</div>
+    <p>Database di segnalazioni e reputazione per indirizzi IP.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.virustotal.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">VirusTotal</div>
+    <p>Analisi di file, URL, IP e domini per rilevamento malware.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://isc.sans.edu/ipinfo.html?ip=" target="_blank">
+  <div class="card">
+    <div class="card-title">SANS Internet Storm Center</div>
+    <p>Analisi e intelligence su attività malevole in rete.</p>
+  </div>
+</a>
+
+<a class="card-link" href="http://ipremoval.sms.symantec.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Symantec IP Removal</div>
+    <p>Servizio di gestione e rimozione reputazione IP malevoli.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://otx.alienvault.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">AlienVault OTX</div>
+    <p>Threat intelligence e indicatori di compromissione (IOC).</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://feodotracker.abuse.ch/browse/trickbot/" target="_blank">
+  <div class="card">
+    <div class="card-title">Feodo Tracker</div>
+    <p>Tracking di botnet e infrastrutture malware attive.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.talosintelligence.com/reputation_center" target="_blank">
+  <div class="card">
+    <div class="card-title">Cisco Talos</div>
+    <p>Intelligence su minacce, reputazione IP e sicurezza globale.</p>
+  </div>
+</a>
+
+<a class="card-link" href="http://jodies.de/ipcalc" target="_blank">
+  <div class="card">
+    <div class="card-title">IP Calculator</div>
+    <p>Calcolo subnet, CIDR e informazioni su reti IP.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Tor</h2>
+<div class="tools">
+<a class="card-link" href="https://metrics.torproject.org/rs.html#search" target="_blank">
+  <div class="card">
+    <div class="card-title">Tor Atlas</div>
+    <p>Analisi e statistiche sui relay della rete Tor.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://exonerator.torproject.org/" target="_blank">
+  <div class="card">
+      <div class="card-title">ExoneraTor</div>
+      <p>Verifica se un IP è stato utilizzato come nodo di uscita Tor.</p>
+    </div>
+</a>
+
+<a class="card-link" href="https://check.torproject.org/cgi-bin/TorBulkExitList.py" target="_blank">
+  <div class="card">
+    <div class="card-title">Tor Bulk Exit List</div>
+    <p>Controllo massivo di IP rispetto agli exit node Tor.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://check.torproject.org/exit-addresses" target="_blank">
+  <div class="card">
+    <div class="card-title">Tor Exit Addresses</div>
+    <p>Elenco pubblico degli indirizzi IP dei nodi di uscita Tor.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://collector.torproject.org/archive/exit-lists/" target="_blank">
+  <div class="card">
+    <div class="card-title">Tor Exit Lists Archive</div>
+    <p>Archivio storico delle liste di exit node della rete Tor.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Torrent</h2>
+<div class="tools">
+<a class="card-link" href="https://iknowwhatyoudownload.com/en/peer/" target="_blank">
+  <div class="card">
+    <div class="card-title">I Know What You Download</div>
+    <p>Analisi delle attività torrent associate a un indirizzo IP.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://newtrackon.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">NewTrackon</div>
+    <p>Monitoraggio e verifica dello stato dei tracker BitTorrent.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://api.antitor.com/swagger" target="_blank">
+  <div class="card">
+    <div class="card-title">Antitor API</div>
+    <p>API per ricerca e analisi di dati legati a contenuti torrent.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>DNS</h2>
+<div class="tools">
+<a class="card-link" href="https://dnsdumpster.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">DNSDumpster</div>
+    <p>Ricognizione DNS e mappatura delle infrastrutture di dominio.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://viewdns.info/reversewhois/" target="_blank">
+  <div class="card">
+    <div class="card-title">Reverse WHOIS (ViewDNS)</div>
+    <p>Ricerca domini collegati a un intestatario WHOIS.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://viewdns.info/iphistory/?domain=" target="_blank">
+  <div class="card">
+    <div class="card-title">IP History (ViewDNS)</div>
+    <p>Storico degli indirizzi IP associati a un dominio.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://lookup.icann.org/en" target="_blank">
+  <div class="card">
+    <div class="card-title">ICANN Lookup</div>
+    <p>Informazioni WHOIS ufficiali su domini e registrazioni.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.shodan.io/domain/google.com" target="_blank">
+  <div class="card">
+    <div class="card-title">Shodan Domain Search</div>
+    <p>Analisi di servizi e asset esposti associati a un dominio.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://crt.sh/" target="_blank">
+  <div class="card">
+    <div class="card-title">crt.sh</div>
+    <p>Ricerca nei log di Certificate Transparency.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://certgrep.sh/" target="_blank">
+  <div class="card">
+    <div class="card-title">Certgrep</div>
+    <p>Query avanzate su certificati TLS pubblici.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://sslmate.com/ct_search_api/" target="_blank">
+  <div class="card">
+    <div class="card-title">SSLMate CT Search API</div>
+    <p>API per ricerca nei log di Certificate Transparency.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://fullhunt.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">FullHunt</div>
+    <p>Mappatura della superficie di attacco di un’organizzazione.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://user.whoisxmlapi.com/products" target="_blank">
+  <div class="card">
+    <div class="card-title">WhoisXML API</div>
+    <p>API per dati WHOIS, domini e intelligence DNS.</p>
+    <div class="badge">AUTHENTICATED</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://domainstack.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">Domainstack</div>
+    <p>Analisi e intelligence su domini e asset digitali.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://dnslytics.com/domain-search/" target="_blank">
+  <div class="card">
+    <div class="card-title">DNSlytics</div>
+    <p>Analisi DNS, domini e infrastrutture collegate.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://whoisology.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Whoisology</div>
+    <p>Archivio storico di record WHOIS di domini.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://intodns.com/dnssniffer.com" target="_blank">
+  <div class="card">
+    <div class="card-title">IntoDNS</div>
+    <p>Verifica configurazione e salute dei DNS di un dominio.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.namecheap.com/domains/bulk-domain-search/" target="_blank">
+  <div class="card">
+    <div class="card-title">Namecheap Bulk Search</div>
+    <p>Ricerca massiva di disponibilità domini.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.domaincodex.com" target="_blank">
+  <div class="card">
+    <div class="card-title">DomainCodex</div>
+    <p>Analisi e intelligence su domini e infrastrutture web.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://pulsedive.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Pulsedive</div>
+    <p>Threat intelligence e analisi indicatori di compromissione.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://dnsspy.io/scan/" target="_blank">
+  <div class="card">
+    <div class="card-title">DNSSpy</div>
+    <p>Analisi configurazione e record DNS.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.expireddomains.net/domain-name-search/" target="_blank">
+  <div class="card">
+    <div class="card-title">Expired Domains</div>
+    <p>Ricerca domini scaduti e disponibili per registrazione.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://subdomainfinder.c99.nl" target="_blank">
+  <div class="card">
+    <div class="card-title">C99 Subdomain Finder</div>
+    <p>Enumerazione di subdomini associati a un dominio.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://securitytrails.com/domain/google.com/dns" target="_blank">
+  <div class="card">
+    <div class="card-title">SecurityTrails DNS</div>
+    <p>Storico e analisi dei record DNS di un dominio.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://completedns.com/dns-history/" target="_blank">
+  <div class="card">
+    <div class="card-title">CompleteDNS History</div>
+    <p>Storico delle modifiche DNS di domini.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.immuniweb.com/ssl/" target="_blank">
+  <div class="card">
+    <div class="card-title">ImmuniWeb SSL Test</div>
+    <p>Analisi sicurezza e configurazione certificati SSL/TLS.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://centralops.net/co/" target="_blank">
+  <div class="card">
+    <div class="card-title">CentralOps</div>
+    <p>Suite di strumenti per DNS, WHOIS, ping e rete.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://dnstwister.report/search?ed=" target="_blank">
+  <div class="card">
+    <div class="card-title">dnstwister</div>
+    <p>Ricerca di domini simili e typosquatting detection.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://data.iana.org/TLD/tlds-alpha-by-domain.txt" target="_blank">
+  <div class="card">
+    <div class="card-title">IANA TLD List</div>
+    <p>Elenco ufficiale dei domini di primo livello (TLD).</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://osint.sh/crt/" target="_blank">
+  <div class="card">
+    <div class="card-title">OSINT.sh CRT</div>
+    <p>Ricerca avanzata nei certificati TLS pubblici.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.haveibeensquatted.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Have I Been Squatted</div>
+  <p>Verifica di possibili casi di typosquatting su domini.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Url info</h2>
+<div class="tools">
+<a class="card-link" href="https://visualping.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">Visualping</div>
+    <p>Monitoraggio cambiamenti su siti web con notifiche automatiche.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://cyscan.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">CyScan</div>
+    <p>Analisi di sicurezza e reputazione per URL e siti web.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://urlscan.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">urlscan.io</div>
+    <p>Analisi di URL con rendering, richieste e tracking delle risorse.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://web.archive.org/" target="_blank">
+  <div class="card">
+    <div class="card-title">Wayback Machine</div>
+    <p>Archivio storico di pagine web e contenuti internet.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.similarweb.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Similarweb</div>
+    <p>Analisi traffico, audience e performance dei siti web.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://builtwith.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">BuiltWith</div>
+    <p>Identificazione delle tecnologie utilizzate da un sito web.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.wappalyzer.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Wappalyzer</div>
+    <p>Rilevamento delle tecnologie e framework usati dai siti web.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>MX</h2>
+<div class="tools">
+<a class="card-link" href="https://mxtoolbox.com/Public/Tools/EmailHeaders.aspx" target="_blank">
+  <div class="card">
+    <div class="card-title">MXToolbox Email Header Analyzer</div>
+    <p>Analisi delle intestazioni email per tracciare percorso e autenticazione.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://emkei.cz/" target="_blank">
+  <div class="card">
+    <div class="card-title">Emkei Fake Mailer</div>
+    <p>Invio di email con header personalizzati per test e simulazioni.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Ports</h2>
+<div class="tools">
+<a class="card-link" href="https://www.speedguide.net/ports.php" target="_blank">
+  <div class="card">
+    <div class="card-title">SG TCP/IP Ports Database</div>
+    <p>Database delle porte TCP/UDP e relativi servizi di rete.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Telegram</h2>
+<div class="tools">
+<a class="card-link" href="https://lyzem.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Lyzem</div>
+    <p>Motore di ricerca per contenuti e canali Telegram.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://telegramdb.org/" target="_blank">
+  <div class="card">
+    <div class="card-title">TelegramDB</div>
+    <p>Database per ricerca e analisi di contenuti Telegram.</p>
+    <div class="badge">AUTHENTICATED</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://telemetr.io/en/channels" target="_blank">
+  <div class="card">
+    <div class="card-title">Telemetr</div>
+    <p>Analisi e ranking di canali Telegram pubblici.</p>
+    <div class="badge">AUTHENTICATED</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://combot.org/telegram/top/groups?lng=it&page=1" target="_blank">
+  <div class="card">
+    <div class="card-title">Combot Telegram Groups</div>
+    <p>Classifiche e statistiche dei gruppi Telegram più attivi.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.telemetryapp.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">Telemetry</div>
+    <p>Analisi e monitoraggio di metriche e dati applicativi.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://github.com/odysseusmax/tg-index" target="_blank">
+  <div class="card">
+    <div class="card-title">TG Index</div>
+    <p>Indicizzazione e accesso ai file di canali Telegram.</p>
+	<div class="badge_github">GITHUB</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://github.com/Forichok/TelegramOnlineSpy" target="_blank">
+  <div class="card">
+    <div class="card-title">Telegram Online Spy</div>
+    <p>Bot per monitoraggio dello stato online su Telegram.</p>
+	<div class="badge_github">GITHUB</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://github.com/pielco11/telescan" target="_blank">
+  <div class="card">
+    <div class="card-title">Telescan</div>
+    <p>Tool OSINT per analisi di canali e utenti Telegram.</p>
+	<div class="badge_github">GITHUB</div>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Social</h2>
+<div class="tools">
+<a class="card-link" href="https://ohshint.gitbook.io/oh-shint-its-a-blog/osint-web-resources/social-media-intelligence-socmint" target="_blank">
+  <div class="card">
+    <div class="card-title">SOCMINT Resources (OH SHINT)</div>
+    <p>Risorse e strumenti per social media intelligence e OSINT.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.facebook.com/public/mario+rossi" target="_blank">
+  <div class="card">
+    <div class="card-title">Facebook Public Search</div>
+    <p>Ricerca pubblica di profili e contenuti su Facebook.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>ImageSearch</h2>
+<div class="tools">
+<a class="card-link" href="https://www.duplichecker.com/reverse-image-search.php" target="_blank">
+  <div class="card">
+    <div class="card-title">DupliChecker Reverse Image Search</div>
+    <p>Ricerca immagini simili tramite confronto visivo online.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://tineye.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">TinEye</div>
+    <p>Motore di ricerca inversa per immagini e loro origine.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://yandex.com/images/" target="_blank">
+  <div class="card">
+    <div class="card-title">Yandex Images</div>
+    <p>Ricerca inversa e classica di immagini sul web.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.bing.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Bing</div>
+    <p>Motore di ricerca generale con supporto a ricerche OSINT.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.google.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Google</div>
+    <p>Motore di ricerca generale per raccolta informazioni pubbliche.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Leads</h2>
+<div class="tools">
+<a class="card-link" href="https://www.idcrawl.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">IDCrawl</div>
+    <p>Motore di ricerca per persone e profili pubblici online.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://intelx.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">Intelligence X</div>
+    <p>Motore di ricerca per dati pubblici, leak e archivi OSINT.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://leakix.net/search?scope=leak&q=" target="_blank">
+  <div class="card">
+    <div class="card-title">LeakIX</div>
+    <p>Ricerca di esposizioni e dati sensibili su sistemi pubblici.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://pastebin.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Pastebin</div>
+    <p>Piattaforma per la condivisione e ricerca di testo pubblico.</p>
+    <div class="badge">AUTHENTICATED</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.peekyou.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">PeekYou</div>
+    <p>Ricerca di persone tramite aggregazione di dati pubblici online.</p>
+  </div>
+</a>
+
+<a class="card-link" href="http://recruitmentgeek.com/tools/linkedin/" target="_blank">
+  <div class="card">
+    <div class="card-title">LinkedIn X-Ray Search</div>
+    <p>Ricerca avanzata di profili LinkedIn tramite operatori di ricerca.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Crypto</h2>
+<div class="tools">
+<a class="card-link" href="https://www.blockchain.com/explorer" target="_blank">
+  <div class="card">
+    <div class="card-title">Blockchain.com Explorer</div>
+    <p>Esplorazione di transazioni e blocchi su Bitcoin ed Ethereum.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://etherscan.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">Etherscan</div>
+    <p>Blockchain explorer per transazioni, smart contract e wallet Ethereum.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://blockexplorer.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">BlockExplorer</div>
+    <p>Visualizzazione e analisi di dati blockchain e transazioni Bitcoin.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://mempool.space/" target="_blank">
+  <div class="card">
+    <div class="card-title">Mempool.space</div>
+    <p>Monitoraggio in tempo reale delle transazioni Bitcoin e fee di rete.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Encoding-Decoding</h2>
+<div class="tools">
+<a class="card-link" href="https://gchq.github.io/CyberChef/" target="_blank">
+  <div class="card">
+    <div class="card-title">CyberChef</div>
+    <p>Analisi e trasformazione di dati (encoding, decoding, hashing).</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.fontspace.com/unicode/analyzer#e=cA" target="_blank">
+  <div class="card">
+    <div class="card-title">Unicode Text Analyzer</div>
+    <p>Analisi dei caratteri Unicode e identificazione encoding testo.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://md5hashing.net/" target="_blank">
+  <div class="card">
+    <div class="card-title">MD5 Hashing</div>
+    <p>Generazione e analisi di hash MD5 e altri algoritmi.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.tunnelsup.com/hash-analyzer/" target="_blank">
+  <div class="card">
+    <div class="card-title">Hash Analyzer (TunnelsUP)</div>
+    <p>Identificazione del tipo di hash e analisi automatica.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://hashes.com/en/decrypt/hash" target="_blank">
+  <div class="card">
+    <div class="card-title">Hashes.com</div>
+    <p>Ricerca e possibile decodifica di hash tramite database pubblici.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://crackstation.net/" target="_blank">
+  <div class="card">
+    <div class="card-title">CrackStation</div>
+    <p>Decodifica di hash tramite grandi rainbow tables pubbliche.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://hashkiller.co.uk/Cracker/MD5" target="_blank">
+  <div class="card">
+    <div class="card-title">HashKiller MD5 Cracker</div>
+    <p>Database e cracking di hash MD5 tramite dizionari e leak.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://cirw.in/gpg-decoder/" target="_blank">
+  <div class="card">
+    <div class="card-title">PGP Decoder</div>
+    <p>Decodifica e analisi di messaggi PGP/GPG cifrati.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Throwaway contacts</h2>
+<div class="tools">
+<a class="card-link" href="https://receive-smss.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Receive-SMS Online</div>
+    <p>Numeri temporanei per ricezione SMS online.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://10minutemail.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">10 Minute Mail</div>
+    <p>Servizio di email temporanea con durata limitata.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://temp-mail.org/en/change" target="_blank">
+  <div class="card">
+    <div class="card-title">Temp Mail</div>
+    <p>Generazione e gestione di indirizzi email temporanei.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Other</h2>
+<div class="tools">
+<a class="card-link" href="https://www.mappadeicognomi.it/en/" target="_blank">
+  <div class="card">
+    <div class="card-title">Italy Surname Map</div>
+    <p>Distribuzione geografica dei cognomi in Italia.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://forebears.io/surnames" target="_blank">
+  <div class="card">
+    <div class="card-title">Forebears Surnames</div>
+    <p>Origine, significato e diffusione globale dei cognomi.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.copyscape.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Copyscape</div>
+    <p>Rilevamento di contenuti duplicati e plagio online.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://cyberintelmap.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Cyber Intel Map</div>
+    <p>Mappa di eventi e intelligence su minacce informatiche globali.</p>
+  </div>
+</a>
+
+<a class="card-link" href="http://www.globalincidentmap.com/" target="_blank">
+  <div class="card">
+    <div class="card-title">Global Incident Map</div>
+    <p>Monitoraggio globale di incidenti, eventi e attività sospette.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.osintdojo.com/resources/" target="_blank">
+  <div class="card">
+    <div class="card-title">OSINT Dojo Resources</div>
+    <p>Raccolta di strumenti e risorse per investigazione OSINT.</p>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Tor</h2>
+<div class="tools">
+<a class="card-link" href="https://github.com/apurvsinghgautam/dark-web-osint-tools" target="_blank">
+  <div class="card">
+    <div class="card-title">Dark Web OSINT Tools</div>
+    <p>Collezione open source di strumenti OSINT per analisi del dark web.</p>
+    <div class="badge_github">GITHUB</div>
+  </div>
+</a></div>
+</div>
+<div class="category">
+<h2>Vehicles</h2>
+<div class="tools">
+<a class="card-link" href="https://www.ilportaledellautomobilista.it/web/portale-automobilista/ext/verifica-copertura-rc" target="_blank">
+  <div class="card">
+    <div class="card-title">Verifica Copertura RCA</div>
+    <p>Controllo della copertura assicurativa RCA di un veicolo.</p>
+  </div>
+</a>
+
+<a class="card-link" href="https://www.ilportaledellautomobilista.it/interrogazionistoricorevisioni/spa/" target="_blank">
+  <div class="card">
+    <div class="card-title">Verifica Revisioni Veicolo</div>
+    <p>Consultazione dello storico revisioni di un veicolo.</p>
+  </div>
+</a></div>
+</div>
+</div>
+<script>
+
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("keyup", function(){
+
+let filter = searchInput.value.toLowerCase();
+let cards = document.querySelectorAll(".card");
+
+cards.forEach(card => {
+
+let text = card.innerText.toLowerCase();
+
+if(text.includes(filter)){
+card.style.display="";
+}else{
+card.style.display="none";
+}
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
