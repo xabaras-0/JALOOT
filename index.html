@@ -64,6 +64,74 @@ border-color:var(--accent);
 box-shadow:0 0 10px rgba(0,245,255,0.3);
 }
 
+
+/* BADGE FILTERS */
+
+.badge-filters{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:10px;
+margin-top:14px;
+}
+
+.badge-filter{
+font-family:'JetBrains Mono', monospace;
+font-size:11px;
+letter-spacing:0.6px;
+text-transform:uppercase;
+padding:8px 10px;
+border-radius:999px;
+border:1px solid var(--border);
+background:rgba(11,18,32,0.9);
+color:var(--muted);
+cursor:pointer;
+transition:0.2s;
+}
+
+.badge-filter:hover,
+.badge-filter.active{
+color:var(--accent);
+border-color:var(--accent);
+box-shadow:0 0 10px rgba(0,245,255,0.25);
+}
+
+.badge-filter[data-badge="authenticated"].active{
+color:#c52250;
+border-color:rgba(197,34,80,0.7);
+box-shadow:0 0 10px rgba(197,34,80,0.25);
+}
+
+.badge-filter[data-badge="top"].active{
+color:#00ffb7;
+border-color:rgba(0,255,183,0.7);
+box-shadow:0 0 10px rgba(0,255,183,0.25);
+}
+
+.badge-filter[data-badge="github"].active{
+color:#fff;
+border-color:rgba(255,255,255,0.55);
+box-shadow:0 0 10px rgba(255,255,255,0.18);
+}
+
+.badge-filter[data-badge="none"].active{
+color:#cbd5e1;
+border-color:#64748b;
+box-shadow:0 0 10px rgba(100,116,139,0.25);
+}
+
+.no-results{
+display:none;
+margin:30px 0 0;
+text-align:center;
+color:var(--muted);
+font-size:14px;
+}
+
+.no-results.visible{
+display:block;
+}
+
 /* CONTAINER */
 
 .container{
@@ -274,11 +342,19 @@ border-radius:10px;
 <header>
 <h1>JUST ANOTHER LIST OF OSINT TOOLS</h1>
 <p style="color:#64748b; font-size:14px;">
-Lista di strumenti a supporto di investigatori e analisti  ●  [last update: 06/05/2026]
+Lista di strumenti a supporto di investigatori e analisti  ●  [last update: 08/05/2026]
 </p>
 <input class="search" id="searchInput" placeholder="Search OSINT tool..." type="text"/>
+<div class="badge-filters" aria-label="Filtri badge">
+  <button class="badge-filter active" type="button" data-badge="all" aria-pressed="true">All</button>
+  <button class="badge-filter" type="button" data-badge="top" aria-pressed="false">Top</button>
+  <button class="badge-filter" type="button" data-badge="authenticated" aria-pressed="false">Authenticated</button>
+  <button class="badge-filter" type="button" data-badge="github" aria-pressed="false">GitHub</button>
+  <button class="badge-filter" type="button" data-badge="none" aria-pressed="false">No badge</button>
+</div>
 </header>
 <div class="container">
+<p id="noResults" class="no-results">Nessuno strumento trovato con i filtri selezionati.</p>
 <div class="category">
 <h2>General</h2>
 <div class="tools">
@@ -583,6 +659,23 @@ Lista di strumenti a supporto di investigatori e analisti  ●  [last update: 06
     <div class="badge">AUTHENTICATED</div>
   </div>
 </a>
+
+<a class="card-link" href="https://intelx.io/" target="_blank">
+  <div class="card">
+    <div class="card-title">Intelligence X</div>
+    <p>Motore di ricerca per dati pubblici, leak e archivi OSINT.</p>
+	<div class="badge_top">TOP</div>
+  </div>
+</a>
+	
+<a class="card-link" href="https://www.alerts.bar/exposure" target="_blank">
+  <div class="card">
+    <div class="card-title">Alerts Bar</div>
+    <p>Servizio parzialmente gratuito per visualizzare statistiche sulle menzioni del dominio aziendale in data leak.</p>
+    <div class="badge_top">TOP</div>
+  </div>
+</a>
+
 </div>
 </div>
 <div class="category">
@@ -1448,14 +1541,6 @@ Lista di strumenti a supporto di investigatori e analisti  ●  [last update: 06
   </div>
 </a>
 
-<a class="card-link" href="https://intelx.io/" target="_blank">
-  <div class="card">
-    <div class="card-title">Intelligence X</div>
-    <p>Motore di ricerca per dati pubblici, leak e archivi OSINT.</p>
-	<div class="badge_top">TOP</div>
-  </div>
-</a>
-
 <a class="card-link" href="https://leakix.net/search?scope=leak&q=" target="_blank">
   <div class="card">
     <div class="card-title">LeakIX</div>
@@ -1677,25 +1762,86 @@ Lista di strumenti a supporto di investigatori e analisti  ●  [last update: 06
 <script>
 
 const searchInput = document.getElementById("searchInput");
+const filterButtons = document.querySelectorAll(".badge-filter");
+const allButton = document.querySelector('.badge-filter[data-badge="all"]');
+const noResults = document.getElementById("noResults");
 
-searchInput.addEventListener("keyup", function(){
+function getCardBadges(cardLink){
+  const badges = cardLink.querySelectorAll(".badge, .badge_top, .badge_github");
 
-let filter = searchInput.value.toLowerCase();
-let cards = document.querySelectorAll(".card");
-
-cards.forEach(card => {
-
-let text = card.innerText.toLowerCase();
-
-if(text.includes(filter)){
-card.style.display="";
-}else{
-card.style.display="none";
+  return [...badges].map(badge => badge.textContent.trim().toLowerCase());
 }
 
+function getSelectedBadges(){
+  return [...filterButtons]
+    .filter(button => button.dataset.badge !== "all" && button.classList.contains("active"))
+    .map(button => button.dataset.badge);
+}
+
+function setAllButtonState(){
+  const hasSelectedBadge = getSelectedBadges().length > 0;
+
+  allButton.classList.toggle("active", !hasSelectedBadge);
+  allButton.setAttribute("aria-pressed", String(!hasSelectedBadge));
+}
+
+function filterTools(){
+  const searchTerm = searchInput.value.trim().toLowerCase();
+  const selectedBadges = getSelectedBadges();
+  let totalVisibleCards = 0;
+
+  document.querySelectorAll(".category").forEach(category => {
+    let visibleCardsInCategory = 0;
+
+    category.querySelectorAll(".card-link").forEach(cardLink => {
+      const cardText = cardLink.innerText.toLowerCase();
+      const cardBadges = getCardBadges(cardLink);
+      const matchesSearch = !searchTerm || cardText.includes(searchTerm);
+      const matchesBadge = selectedBadges.length === 0 || selectedBadges.some(selectedBadge => {
+        if(selectedBadge === "none"){
+          return cardBadges.length === 0;
+        }
+
+        return cardBadges.includes(selectedBadge);
+      });
+
+      const isVisible = matchesSearch && matchesBadge;
+
+      cardLink.style.display = isVisible ? "block" : "none";
+
+      if(isVisible){
+        visibleCardsInCategory++;
+        totalVisibleCards++;
+      }
+    });
+
+    category.style.display = visibleCardsInCategory > 0 ? "" : "none";
+  });
+
+  noResults.classList.toggle("visible", totalVisibleCards === 0);
+}
+
+searchInput.addEventListener("input", filterTools);
+
+filterButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    if(button.dataset.badge === "all"){
+      filterButtons.forEach(filterButton => {
+        const isAllButton = filterButton.dataset.badge === "all";
+        filterButton.classList.toggle("active", isAllButton);
+        filterButton.setAttribute("aria-pressed", String(isAllButton));
+      });
+    }else{
+      button.classList.toggle("active");
+      button.setAttribute("aria-pressed", String(button.classList.contains("active")));
+      setAllButtonState();
+    }
+
+    filterTools();
+  });
 });
 
-});
+filterTools();
 
 </script>
 
